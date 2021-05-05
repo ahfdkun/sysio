@@ -116,7 +116,7 @@ public class MyNetty {
 
 
         thread.register(server);
-        //指不定什么时候家里来人。。响应式
+
         ChannelPipeline p = server.pipeline();
         p.addLast(new MyAcceptHandler(thread, new ChannelInit()));  //accept接收客户端，并且注册到selector
 //        p.addLast(new MyAcceptHandler(thread,new MyInHandler()));  //accept接收客户端，并且注册到selector
@@ -173,7 +173,7 @@ public class MyNetty {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             //  listen  socket   accept    client
             //  socket           R/W
-            SocketChannel client = (SocketChannel) msg;  //accept  我怎么没调用额？
+            SocketChannel client = (SocketChannel) msg;  //accept
             //2，响应式的  handler
             ChannelPipeline p = client.pipeline();
             p.addLast(handler);  //1,client::pipeline[ChannelInit,]

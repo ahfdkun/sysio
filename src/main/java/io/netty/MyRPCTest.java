@@ -26,15 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 /*
     1，先假设一个需求，写一个RPC
     2，来回通信，连接数量，拆包？
-    3，动态代理呀，序列化，协议封装
+    3，动态代理，序列化，协议封装
     4，连接池
     5，就像调用本地方法一样去调用远程的方法，面向java中就是所谓的 面向interface开发
- */
-
-
-/**
- * 上节课，基本写了一个能发送
- * 小问题，当并发通过一个连接发送后，服务端解析bytebuf 转 对象的过程出错
  */
 public class MyRPCTest {
 
