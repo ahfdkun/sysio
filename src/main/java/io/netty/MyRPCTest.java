@@ -239,8 +239,8 @@ class ServerDecode extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) throws Exception {
 
-        while (buf.readableBytes() >= 110) {
-            byte[] bytes = new byte[110];
+        while (buf.readableBytes() >= 87) {
+            byte[] bytes = new byte[87];
             buf.getBytes(buf.readerIndex(), bytes);  //从哪里读取，读多少，但是readindex不变
             ByteArrayInputStream in = new ByteArrayInputStream(bytes);
             ObjectInputStream oin = new ObjectInputStream(in);
@@ -249,9 +249,9 @@ class ServerDecode extends ByteToMessageDecoder {
 
             //DECODE在2个方向都使用
             //通信的协议
-            if (buf.readableBytes() >= header.getDataLen()) {
+            if (buf.readableBytes() >= header.getDataLen() + 87) {
                 //处理指针
-                buf.readBytes(110);  //移动指针到body开始的位置
+                buf.readBytes(87);  //移动指针到body开始的位置
                 byte[] data = new byte[(int) header.getDataLen()];
                 buf.readBytes(data);
                 ByteArrayInputStream din = new ByteArrayInputStream(data);
@@ -311,8 +311,8 @@ class ServerRequestHandler extends ChannelInboundHandlerAdapter {
 
         //3，自己创建线程池
         //2,使用netty自己的eventloop来处理业务及返回
-        ctx.executor().execute(new Runnable() {
-//        ctx.executor().parent().next().execute(new Runnable() {
+//        ctx.executor().execute(new Runnable() {
+        ctx.executor().parent().next().execute(new Runnable() {
 
             @Override
             public void run() {
@@ -338,9 +338,9 @@ class ServerRequestHandler extends ChannelInboundHandlerAdapter {
                 }
 
 
-//                String execThreadName = Thread.currentThread().getName();
+                String execThreadName = Thread.currentThread().getName();
                 MyContent content = new MyContent();
-//                String s = "io thread: " + ioThreadName + " exec thread: " + execThreadName + " from args:" + requestPkg.content.getArgs()[0];
+                String s = "io thread: " + ioThreadName + " exec thread: " + execThreadName + " from args:" + requestPkg.content.getArgs()[0];
                 content.setRes((String) res);
                 byte[] contentByte = SerDerUtil.ser(content);
 
@@ -366,7 +366,7 @@ class ServerRequestHandler extends ChannelInboundHandlerAdapter {
 //源于 spark 源码
 class ClientFactory {
 
-    int poolSize = 1;
+    int poolSize = 10;
     NioEventLoopGroup clientWorker;
     Random rand = new Random();
 
