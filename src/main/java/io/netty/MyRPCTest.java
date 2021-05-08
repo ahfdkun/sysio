@@ -142,7 +142,6 @@ public class MyRPCTest {
             oout = new ObjectOutputStream(out);
             oout.writeObject(header);
             //解决数据decode问题
-            //TODO：Server：： dispatcher  Executor
             byte[] msgHeader = out.toByteArray();
             System.out.println("old:::" + msgHeader.length);
 
@@ -212,7 +211,7 @@ class MyCar implements Car {
 
     @Override
     public String ooxx(String msg) {
-        System.out.println("server,get client arg:" + msg);
+        //System.out.println("server,get client arg:" + msg);
         return "server res " + msg;
     }
 }
